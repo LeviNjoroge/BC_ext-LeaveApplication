@@ -1,7 +1,7 @@
 table 50400 EmployeeApplicationTable
 {
     Caption = 'EmployeeApplicationTable';
-    DataClassification = ToBeClassified;
+    DataClassification = EndUserIdentifiableInformation;
     
     fields
     {
@@ -58,7 +58,7 @@ table 50400 EmployeeApplicationTable
         {
             Caption = 'Job Title';
         }
-        field(13; "Employment Tier"; Enum "Employee Gender")
+        field(13; "Employment Tier"; Enum "Employment Tier")
         {
             Caption = 'Employment Tier';
         }

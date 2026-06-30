@@ -30,4 +30,7 @@ enum 50400 "Leave Application Types"
     {
         Caption = 'Unpaid Leave';
     }
+    value(7; Other)
+    {
+    }
 }

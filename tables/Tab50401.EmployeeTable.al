@@ -1,15 +1,14 @@
 table 50401 EmployeeTable
 {
     Caption = 'EmployeeApplicationTable';
-    DataClassification = ToBeClassified;
+    DataClassification = EndUserIdentifiableInformation;
     
     fields
     {
-        field(1; "ApplicationNo."; Integer)
+        field(1; "EmployeeNo"; Code[12])
         {
             Caption = 'ApplicationNo.';
-            AutoIncrement = true;
-            MinValue = 1;
+            
         }
         field(2; "First Name"; Text[20])
         {
@@ -66,10 +65,28 @@ table 50401 EmployeeTable
         {
             Caption = 'Department';
         }
+        field(15; "Annual Leave Entitlement"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(16; "Leave Balance"; Integer)
+        {
+            // FieldClass = FlowField;
+            // CalcFormula = sum();
+        }
+        field(17; "Probation"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(18; "Probation End Date"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
+        
     }
     keys
     {
-        key(PK; "ApplicationNo.")
+        key(PK; "EmployeeNo")
         {
             Clustered = true;
         }
