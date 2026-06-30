@@ -1,0 +1,18 @@
+I am thinking of a project I can create on BC for the company I am currently working at, jus a demo project tho... and I am thinking aout creating a leave application extension...
+
+so I will need to first create a table and pages for all employees, then another for leave application.. one can log into the application and create a new entry, where they will enter their details for a new application(including when they would like to start their leave, for how long they would want that, what type of leave do they want[maternity, sick, recreational])... then send it out for approval... this will show at another page, "awaiting approval", where the HR will view all applications and 
+
+
+Tables:
+Employees
+Leave Applications
+Approved Applications - APR-20260101-0001
+
+Pages:
+1. Employee Management Page: This page will allow HR to manage employee records, including adding new employees, updating existing records, and viewing employee details.
+2. Leave Application Page: This page will allow employees to submit their leave applications. They will fill out a form with their personal details, leave type, start date, and duration. Upon submission, the application will be sent for approval.
+3. Awaiting Approval Page: This page will display all leave applications that are pending approval.
+4. Approved Applications Page: This page will display all leave applications that have been approved, along with their details and approval status.
+5. Leave Application Details Page: This page will show the details of a specific leave application,
+    including the employee's information, leave type, start date, duration, and approval status. It will also provide options for HR to approve or reject the application.
+6. Leave Application History Page: This page will allow employees to view their past leave applications, including the status of each application (approved, rejected, or pending). It will also provide a summary of total leave taken and remaining leave balance.
