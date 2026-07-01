@@ -74,14 +74,6 @@ table 50401 EmployeeTable
             // FieldClass = FlowField;
             // CalcFormula = sum();
         }
-        field(17; "Probation"; Boolean)
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(18; "Probation End Date"; Date)
-        {
-            DataClassification = ToBeClassified;
-        }
         
     }
     keys

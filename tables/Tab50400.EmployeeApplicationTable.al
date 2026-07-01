@@ -66,6 +66,11 @@ table 50400 EmployeeApplicationTable
         {
             Caption = 'Department';
         }
+        field(15; Status; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = Pending, Approved, Rejected;
+        }
     }
     keys
     {
