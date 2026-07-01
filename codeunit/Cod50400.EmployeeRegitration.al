@@ -7,7 +7,6 @@ codeunit 50400 "EmployeeRegistration"
         Employee: Record EmployeeTable;
         Setup : Record SetupTable;
     begin
-        Setup.Get('SETUP1');
         if EmployeeApplication.Get(ApplicationID) then begin
             if EmployeeApplication.Status = EmployeeApplication.Status::Approved then begin
                 // transfer data
@@ -26,13 +25,6 @@ codeunit 50400 "EmployeeRegistration"
                 Employee."Job Title" := EmployeeApplication."Job Title";
                 Employee."Employment Tier" := EmployeeApplication."Employment Tier";
                 Employee.Department := EmployeeApplication.Department;
-                if Employee."Employment Tier" = Employee."Employment Tier"::Junior then begin
-                    Employee."Annual Leave Entitlement" := Setup."Junior Employee Leave Days";
-                end else if Employee."Employment Tier" = Employee."Employment Tier"::Mid then begin
-                    Employee."Annual Leave Entitlement" := Setup."Mid Employee Leave Days";
-                end else if Employee."Employment Tier" = Employee."Employment Tier"::Senior then begin
-                    Employee."Annual Leave Entitlement" := Setup.;
-                end;
                 Employee.Insert();
                 // send email
                 Message('Success!\Application has been approved.\Employee has received confirmation email.');

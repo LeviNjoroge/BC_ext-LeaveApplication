@@ -57,9 +57,22 @@ table 50401 EmployeeTable
         {
             Caption = 'Job Title';
         }
-        field(13; "Employment Tier"; Enum )
+        field(13; "Employment Tier"; Enum "Employment Tier")
         {
             Caption = 'Employment Tier';
+            trigger OnValidate()
+            var
+            Setup: Record SetupTable;
+            begin
+                Setup.Get('SETUP1');
+                if Rec."Employment Tier" = Rec."Employment Tier"::Junior then begin
+                    Rec."Annual Leave Entitlement" := Setup."Junior Employee Leave Days";
+                end else if Rec."Employment Tier" = Rec."Employment Tier"::Mid then begin
+                    Rec."Annual Leave Entitlement" := Setup."Mid Employee Leave Days";
+                end else if Rec."Employment Tier" = Rec."Employment Tier"::Senior then begin
+                    Rec."Annual Leave Entitlement" := Setup."Senior Employee Leave Days";
+                end;
+            end;
         }
         field(14; Department; Enum Departments)
         {
@@ -67,7 +80,6 @@ table 50401 EmployeeTable
         }
         field(15; "Annual Leave Entitlement"; Integer)
         {
-            DataClassification = ToBeClassified;
         }
         field(16; "Leave Balance"; Integer)
         {
