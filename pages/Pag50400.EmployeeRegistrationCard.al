@@ -83,5 +83,38 @@ page 50400 "Employee Registration Card"
             }
         }
     }
+    actions
+    {
+        area(Promoted)
+        {
+            actionref("Approves"; Approve){}
+            actionref("Rejects"; Reject){}
+            actionref("Submits"; Submit){}
+        }
+        area(Navigation)
+        {
+            action(Approve){
+                Image = Approval;
+                trigger OnAction()
+                begin
+                    Rec.Status := Rec.Status::Approved;
+                end;
+            }
+            action(Reject){
+                Image = Reject;
+                trigger OnAction()
+                begin
+                    Rec.Status := Rec.Status::Rejected;
+                end;
+            }
+            action(Submit)
+            {
+                trigger OnAction()
+                begin
+                    
+                end;
+            }
+            }
+        }
+    }
 
-}

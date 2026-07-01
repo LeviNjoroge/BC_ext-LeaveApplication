@@ -57,7 +57,7 @@ table 50401 EmployeeTable
         {
             Caption = 'Job Title';
         }
-        field(13; "Employment Tier"; Enum "Employee Gender")
+        field(13; "Employment Tier"; Enum )
         {
             Caption = 'Employment Tier';
         }

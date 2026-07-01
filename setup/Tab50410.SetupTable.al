@@ -13,6 +13,18 @@ table 50410 SetupTable
         {
             Caption = 'Member No. Prefix';
         }
+        field(3; "Junior Employee Leave Days"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(4; "Mid Employee Leave Days"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(5; "Senior Employee Leave Days"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
     keys
     {
