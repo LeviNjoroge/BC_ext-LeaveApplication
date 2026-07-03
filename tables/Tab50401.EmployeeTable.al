@@ -2,6 +2,7 @@ table 50401 EmployeeTable
 {
     Caption = 'EmployeeApplicationTable';
     DataClassification = EndUserIdentifiableInformation;
+    LookupPageId = "Registered Employees List";
     
     fields
     {
@@ -81,10 +82,16 @@ table 50401 EmployeeTable
         field(15; "Annual Leave Entitlement"; Integer)
         {
         }
-        field(16; "Leave Balance"; Integer)
+        field(16; Leave_Taken; Integer)
         {
-            // FieldClass = FlowField;
-            // CalcFormula = sum();
+            DataClassification = ToBeClassified;
+        }
+        field(17; "Leave Balance"; Integer)
+        {
+            trigger OnLookup()
+            begin
+                "Leave Balance" := "Annual Leave Entitlement" - Leave_Taken;
+            end;
         }
         
     }

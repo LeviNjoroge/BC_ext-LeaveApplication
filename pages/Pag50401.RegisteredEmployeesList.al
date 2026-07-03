@@ -15,6 +15,7 @@ page 50401 "Registered Employees List"
                 field(EmployeeNo; Rec.EmployeeNo)
                 {
                     ToolTip = 'Specifies the value of the ApplicationNo. field.', Comment = '%';
+                    Editable = fa
                 }
                 field("First Name"; Rec."First Name")
                 {

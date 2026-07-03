@@ -137,7 +137,7 @@ page 50400 "Employee Registration Card"
             action(Pending)
             {
                 Caption = 'Pending Approval';
-                Image = Timesheet;
+                Image = Approvals;
                 trigger OnAction()
                 var
                     PendingList : Page "Pending Applications List";
@@ -149,6 +149,7 @@ page 50400 "Employee Registration Card"
             action(Approved)
             {
                 Caption = 'Approved Applications';
+                Image = ReleaseDoc;
                 trigger OnAction()
                 var
                     ApprovalsList : Page "Approved Applications List";

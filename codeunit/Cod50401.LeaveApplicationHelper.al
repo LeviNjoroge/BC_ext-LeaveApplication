@@ -1,6 +1,26 @@
 codeunit 50401 "Leave Application Helper"
 {
     // Total Days Requested: A calculated field (End Date minus Start Date). You may need to build logic to exclude weekends and public holidays.
+    procedure LeaveDaysCalculator(EmployeeID: Integer; StartDate: Date; Days: Integer): Date
+    var
+        Employee: Record EmployeeTable;
+        EndDate: Date;
+        CalenderManager : Codeunit "Calendar Management";
+        CustomCalender : array[2] of Record "Customized Calendar Change";
+    begin
+        CustomCalender.
+        if Employee.Get(EmployeeID) then begin
+            if Employee."Leave Balance" >= Days then begin
+                EndDate:= CalenderManager.CalcDateBOC(StrSubstNo('%1D', Days), StartDate, CustomCalender, true);
+            end else begin
+                Error('Requested leave exceeds the available balance by %1 days!', Employee."Leave Balance");
+            end;
+        end else begin
+            Error('Employee ID %1 was not found!\Contact system admin promptly.', EmployeeID);
+        end;
+        exit(EndDate);
+    end;
+
 
     procedure Submit(ID: Integer)
     begin
