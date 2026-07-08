@@ -16,7 +16,7 @@ page 50404 "Approved Applications List"
                 {
                     ToolTip = 'Specifies the value of the ApplicationNo field.', Comment = '%';
                 }
-                field(Employee; Rec.Employee)
+                field(EmployeeID; Rec.Employee)
                 {
                     ToolTip = 'Specifies the value of the Employee field.', Comment = '%';
                 }
@@ -31,10 +31,6 @@ page 50404 "Approved Applications List"
                 field("End date"; Rec."End date")
                 {
                     ToolTip = 'Specifies the value of the End date field.', Comment = '%';
-                }
-                field("Expected return date"; Rec."Expected return date")
-                {
-                    ToolTip = 'Specifies the value of the Expected return date field.', Comment = '%';
                 }
                 field("No. of days"; Rec."No. of days")
                 {
@@ -56,6 +52,92 @@ page 50404 "Approved Applications List"
                 {
                     ToolTip = 'Specifies the value of the ApprovalDate field.', Comment = '%';
                 }
+            }
+        }
+    }
+    actions
+    {
+        area(Promoted)
+        {
+            group(Employee)
+            {
+                actionref(Register; Registration) { }
+                actionref(List; Employees) { }
+            }
+            group(Applications)
+            {
+                actionref(Apply; Application) { }
+                actionref(Pendings; Pending) { }
+                actionref(Approvals; Approved) { }
+            }
+            group(Other)
+            {
+                actionref(Setting; Settings) { }
+            }
+        }
+        area(Navigation)
+        {
+            action(Registration)
+            {
+                Image = Employee;
+                trigger OnAction()
+                var
+                    EmployeeReg: Page "Employee Registration Card";
+                begin
+                    EmployeeReg.Run();
+                end;
+            }
+            action(Employees)
+            {
+                Image = CustomerList;
+                trigger OnAction()
+                var
+                    Employees: Page "Registered Employees List";
+                begin
+                    Employees.Run();
+                end;
+            }
+            action(Application)
+            {
+                Image = ApplyTemplate;
+                trigger OnAction()
+                var
+                    ApplicationPage: Page "Leave Application";
+                begin
+                    ApplicationPage.Run();
+                end;
+            }
+            action(Pending)
+            {
+                Caption = 'Pending Approval';
+                Image = Approvals;
+                trigger OnAction()
+                var
+                    PendingList: Page "Pending Applications List";
+                begin
+                    PendingList.Run();
+                end;
+            }
+            action(Settings)
+            {
+                image = Administration;
+                trigger OnAction()
+                var
+                    setup: Page "Leave Application Setup";
+                begin
+                    setup.Run();
+                end;
+            }
+            action(Approved)
+            {
+                Caption = 'Approved Applications';
+                Image = ReleaseDoc;
+                trigger OnAction()
+                var
+                    ApprovalsList: Page "Approved Applications List";
+                begin
+                    ApprovalsList.Run();
+                end;
             }
         }
     }

@@ -37,8 +37,9 @@ table 50402 LeaveApplicationsTable
         {
             Caption = 'Comments';
         }
-        field(8; Attachments; Media)
+        field(8; Attachments; Blob)
         {
+            Subtype = Bitmap;
             Caption = 'Attachments';
         }
         field(9; "Approval Date"; Date)
@@ -53,10 +54,6 @@ table 50402 LeaveApplicationsTable
         {
             DataClassification = ToBeClassified;
             OptionMembers = Pending, Approved, Rejected;
-        }
-        field(12; "Expected Return Date"; Date)
-        {
-            DataClassification = ToBeClassified;
         }
     }
     keys

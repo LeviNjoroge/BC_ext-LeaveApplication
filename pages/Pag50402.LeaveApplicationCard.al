@@ -29,29 +29,49 @@ page 50405 "Leave Application"
             }
             group("Application Details")
             {
-                field(Employee; Rec.Employee)
+                field(EmployeeID; Rec.Employee)
                 {
                     ToolTip = 'Specifies the value of the Employee field.', Comment = '%';
                 }
                 field("Leave Type"; Rec."Leave Type")
                 {
                     ToolTip = 'Specifies the value of the Leave Type field.', Comment = '%';
+                    trigger OnValidate()
+                    var
+                        Setup: Record SetupTable;
+                    begin
+                        Setup.Get('SETUP');
+                        if Rec."Leave Type" = Rec."Leave Type"::"Maternity Leave" then begin
+                            Rec."No. of days" := Setup."Maternity Leave Days";
+                            Rec."End date" := rec."Start date" + Rec."No. of days";
+                        end else if Rec."Leave Type" = Rec."Leave Type"::"Paternity Leave" then begin
+                            Rec."No. of days" := Setup."Paternity Leave Days";
+                            Rec."End date" := rec."Start date" + Rec."No. of days";
+                        end;
+                    end;
                 }
                 field("Start date"; Rec."Start date")
                 {
                     ToolTip = 'Specifies the value of the Start date field.', Comment = '%';
                 }
+                field("No. of days"; Rec."No. of days")
+                {
+                    Editable = (Rec."Leave Type" <> Rec."Leave Type"::"Maternity Leave") and (Rec."Leave Type" <> Rec."Leave Type"::"Paternity Leave");
+                    ToolTip = 'Specifies the value of the No. of days field.', Comment = '%';
+                    trigger OnValidate()
+                    var
+                        LeaveApplicationHelper: Codeunit "Leave Application Helper";
+                    begin
+                        if Rec."Leave Type" = Rec."Leave Type"::"Annual Leave" then begin
+                            Rec."End date" := LeaveApplicationHelper.CalculateAnnualLeaveEnd(Rec.Employee, rec."Start date", rec."No. of days");
+                        end else
+                            Rec."End date" := rec."Start date" + Rec."No. of days";
+                    end;
+                }
                 field("End date"; Rec."End date")
                 {
                     ToolTip = 'Specifies the value of the End date field.', Comment = '%';
-                }
-                field("No. of days"; Rec."No. of days")
-                {
-                    ToolTip = 'Specifies the value of the No. of days field.', Comment = '%';
-                }
-                field("Expected Return Date"; Rec."Expected Return Date")
-                {
-                    ApplicationArea = All;
+                    Editable = false;
                 }
                 
                 field(Comments; Rec.Comments)
@@ -78,12 +98,92 @@ page 50405 "Leave Application"
             }
         }
     }
-        actions
+    actions
     {
         area(Promoted){
             actionref("Approves"; Approve){}
             actionref("Rejects"; Reject){}
             actionref("Finish"; "Submit Application"){}
+            group(Employee)
+            {
+                actionref(Register; Registration) { }
+                actionref(List; Employees) { }
+            }
+            group(Applications)
+            {
+                actionref(Apply; Application) { }
+                actionref(Pendings; Pending) { }
+                actionref(Approvals; Approved) { }
+            }
+            group(Other)
+            {
+                actionref(Setting; Settings) { }
+            }
+        }
+        area(Navigation)
+        {
+            action(Registration)
+            {
+                Image = Employee;
+                trigger OnAction()
+                var
+                    EmployeeReg: Page "Employee Registration Card";
+                begin
+                    EmployeeReg.Run();
+                end;
+            }
+            action(Employees)
+            {
+                Image = CustomerList;
+                trigger OnAction()
+                var
+                    Employees: Page "Registered Employees List";
+                begin
+                    Employees.Run();
+                end;
+            }
+            action(Application)
+            {
+                Image = ApplyTemplate;
+                trigger OnAction()
+                var
+                    ApplicationPage: Page "Leave Application";
+                begin
+                    ApplicationPage.Run();
+                end;
+            }
+            action(Pending)
+            {
+                Caption = 'Pending Approval';
+                Image = Approvals;
+                trigger OnAction()
+                var
+                    PendingList: Page "Pending Applications List";
+                begin
+                    PendingList.Run();
+                end;
+            }
+            action(Settings)
+            {
+                image = Administration;
+                trigger OnAction()
+                var
+                    setup: Page "Leave Application Setup";
+                begin
+                    setup.Run();
+                end;
+            }
+            action(Approved)
+            {
+                Caption = 'Approved Applications';
+                Image = ReleaseDoc;
+                trigger OnAction()
+                var
+                    ApprovalsList: Page "Approved Applications List";
+                begin
+                    ApprovalsList.Run();
+                end;
+            }
         }
         
         area(Processing)

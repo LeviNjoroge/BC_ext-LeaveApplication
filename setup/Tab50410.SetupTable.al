@@ -25,6 +25,14 @@ table 50410 SetupTable
         {
             DataClassification = ToBeClassified;
         }
+        field(6; "Maternity Leave Days"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(7; "Paternity Leave Days"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
     keys
     {
@@ -33,4 +41,10 @@ table 50410 SetupTable
             Clustered = true;
         }
     }
+
+    procedure GetSetup()
+    begin
+        if not Get('SETUP') then
+            Error('Leave setup has not been configured.');
+    end;
 }

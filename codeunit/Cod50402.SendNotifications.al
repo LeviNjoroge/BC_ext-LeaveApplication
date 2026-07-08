@@ -18,12 +18,12 @@ codeunit 50402 SendNotifications
         Email.Send(EmailMessage);
     end;
 
-    procedure ApprovedLeaveApplicationEmail(EmployeeID: Code[20]; LeaveType: Enum "Leave Application Types"; StartDate : Date; EndDate: Date; ReturnDate: Date)
+    procedure ApprovedLeaveApplicationEmail(EmployeeID: Code[20]; LeaveType: Enum "Leave Application Types"; StartDate: Date; EndDate: Date)
     var
         Employee: Record EmployeeTable;
     begin
         if Employee.Get(EmployeeID) then begin
-            EmailMessage.Create(Employee."Email Address", 'Approved Leave Application', StrSubstNo('Dear %1, your request to go on %2 from %3 to %4 has been <b>Approved!</b><br>You are expected to resume your duties on %5.<br>Enjoy your leave!', Employee."First Name", LeaveType, StartDate, EndDate, ReturnDate), true);
+            EmailMessage.Create(Employee."Email Address", 'Approved Leave Application', StrSubstNo('Dear %1, your request to go on %2 from %3 to %4 has been <b>Approved!</b><br>Enjoy your leave!', Employee."First Name", LeaveType, StartDate, EndDate), true);
             Email.Send(EmailMessage);
         end else begin
             Error('Email not sent as Employee with ID %1 was not found', EmployeeID);

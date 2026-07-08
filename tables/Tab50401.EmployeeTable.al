@@ -65,13 +65,14 @@ table 50401 EmployeeTable
             var
             Setup: Record SetupTable;
             begin
-                Setup.Get('SETUP1');
+                Setup.GetSetup();
                 if Rec."Employment Tier" = Rec."Employment Tier"::Junior then begin
-                    Rec."Annual Leave Entitlement" := Setup."Junior Employee Leave Days";
+                    Rec.Validate(Rec."Annual Leave Entitlement", Setup."Junior Employee Leave Days");
                 end else if Rec."Employment Tier" = Rec."Employment Tier"::Mid then begin
-                    Rec."Annual Leave Entitlement" := Setup."Mid Employee Leave Days";
+                    // Rec."Annual Leave Entitlement" := Setup."Mid Employee Leave Days";
+                    Rec.Validate(Rec."Annual Leave Entitlement", Setup."Mid Employee Leave Days");
                 end else if Rec."Employment Tier" = Rec."Employment Tier"::Senior then begin
-                    Rec."Annual Leave Entitlement" := Setup."Senior Employee Leave Days";
+                    Rec.Validate(Rec."Annual Leave Entitlement", Setup."Senior Employee Leave Days");
                 end;
             end;
         }
@@ -81,17 +82,27 @@ table 50401 EmployeeTable
         }
         field(15; "Annual Leave Entitlement"; Integer)
         {
+            trigger OnValidate()
+            begin
+                if Leave_Taken = 0 then begin
+                    "Leave Balance" := "Annual Leave Entitlement";
+                end else begin
+                    "Leave Balance" := "Annual Leave Entitlement" - Leave_Taken;
+                end;
+            end;
         }
         field(16; Leave_Taken; Integer)
         {
             DataClassification = ToBeClassified;
-        }
-        field(17; "Leave Balance"; Integer)
-        {
-            trigger OnLookup()
+            trigger OnValidate()
             begin
                 "Leave Balance" := "Annual Leave Entitlement" - Leave_Taken;
             end;
+        }
+        field(17; "Leave Balance"; Integer)
+        {
+            Editable = false;
+            MinValue = 0;
         }
         
     }
@@ -101,5 +112,9 @@ table 50401 EmployeeTable
         {
             Clustered = true;
         }
+    }
+    fieldgroups
+    {
+        fieldgroup(DropDown; EmployeeNo, "First Name", Surname, Department) { }
     }
 }

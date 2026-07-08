@@ -25,10 +25,6 @@ table 50403 ApprovedApplications
         {
             Caption = 'End date';
         }
-        field(6; "Expected return date"; Date)
-        {
-            DataClassification = ToBeClassified;
-        }
         field(7; "No. of days"; Integer)
         {
             Caption = 'No. of days';
@@ -38,8 +34,9 @@ table 50403 ApprovedApplications
         {
             Caption = 'Comments';
         }
-        field(9; Attachments; Media)
+        field(9; Attachments; Blob)
         {
+            Subtype = Bitmap;
             Caption = 'Attachments';
         }
         field(10; LeaveApplicationDate; Date)

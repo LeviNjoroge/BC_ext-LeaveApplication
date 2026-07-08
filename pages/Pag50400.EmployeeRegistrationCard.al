@@ -4,7 +4,7 @@ page 50400 "Employee Registration Card"
     Caption = 'Employee Registration Card';
     PageType = Card;
     SourceTable = EmployeeApplicationTable;
-    
+
     layout
     {
         area(Content)
@@ -22,8 +22,9 @@ page 50400 "Employee Registration Card"
                     Editable = false;
                 }
             }
-            group("Personal Information"){
-                
+            group("Personal Information")
+            {
+
                 field("First Name"; Rec."First Name")
                 {
                     ToolTip = 'Specifies the value of the First Name field.', Comment = '%';
@@ -49,7 +50,8 @@ page 50400 "Employee Registration Card"
                     ToolTip = 'Specifies the value of the Marital Status field.', Comment = '%';
                 }
             }
-            group("Contact Information"){
+            group("Contact Information")
+            {
                 field("Telephone Number"; Rec."Telephone Number")
                 {
                     ToolTip = 'Specifies the value of the Telephone Number field.', Comment = '%';
@@ -63,7 +65,8 @@ page 50400 "Employee Registration Card"
                     ToolTip = 'Specifies the value of the Address field.', Comment = '%';
                 }
             }
-            group("Employment Information"){
+            group("Employment Information")
+            {
                 field("Date of Joining"; Rec."Date of Joining")
                 {
                     ToolTip = 'Specifies the value of the Date of Joining field.', Comment = '%';
@@ -87,19 +90,23 @@ page 50400 "Employee Registration Card"
     {
         area(Promoted)
         {
-            actionref("Approves"; Approve){}
-            actionref("Rejects"; Reject){}
-            actionref("Submits"; Submit){}
+            actionref("Approves"; Approve) { }
+            actionref("Rejects"; Reject) { }
+            actionref("Submits"; Submit) { }
             group(Employee)
             {
-                actionref(Register; Registration){}
-                actionref(List; Employees){}
+                actionref(Register; Registration) { }
+                actionref(List; Employees) { }
             }
             group(Applications)
             {
-                actionref(Apply; Application){}
-                actionref(Pendings; Pending){}
-                actionref(Approvals; Approved){}
+                actionref(Apply; Application) { }
+                actionref(Pendings; Pending) { }
+                actionref(Approvals; Approved) { }
+            }
+            group(Other)
+            {
+                actionref(Setting; Settings) { }
             }
         }
         area(Navigation)
@@ -109,7 +116,7 @@ page 50400 "Employee Registration Card"
                 Image = Employee;
                 trigger OnAction()
                 var
-                    EmployeeReg : Page "Employee Registration Card";
+                    EmployeeReg: Page "Employee Registration Card";
                 begin
                     EmployeeReg.Run();
                 end;
@@ -119,7 +126,7 @@ page 50400 "Employee Registration Card"
                 Image = CustomerList;
                 trigger OnAction()
                 var
-                    Employees : Page "Registered Employees List";
+                    Employees: Page "Registered Employees List";
                 begin
                     Employees.Run();
                 end;
@@ -140,11 +147,20 @@ page 50400 "Employee Registration Card"
                 Image = Approvals;
                 trigger OnAction()
                 var
-                    PendingList : Page "Pending Applications List";
+                    PendingList: Page "Pending Applications List";
                 begin
                     PendingList.Run();
                 end;
-
+            }
+            action(Settings)
+            {
+                image = Administration;
+                trigger OnAction()
+                var
+                    setup: Page "Leave Application Setup";
+                begin
+                    setup.Run();
+                end;
             }
             action(Approved)
             {
@@ -152,19 +168,21 @@ page 50400 "Employee Registration Card"
                 Image = ReleaseDoc;
                 trigger OnAction()
                 var
-                    ApprovalsList : Page "Approved Applications List";
+                    ApprovalsList: Page "Approved Applications List";
                 begin
                     ApprovalsList.Run();
                 end;
             }
-            action(Approve){
+            action(Approve)
+            {
                 Image = Approval;
                 trigger OnAction()
                 begin
                     Rec.Status := Rec.Status::Approved;
                 end;
             }
-            action(Reject){
+            action(Reject)
+            {
                 Image = Reject;
                 trigger OnAction()
                 begin
@@ -178,16 +196,16 @@ page 50400 "Employee Registration Card"
                 Caption = 'Submit Application';
                 trigger OnAction()
                 var
-                    EmployeeRegisteration : Codeunit EmployeeRegistration;
+                    EmployeeRegisteration: Codeunit EmployeeHelper;
                 begin
-                    
+
                     EmployeeRegisteration.RegisterMembers(Rec."ApplicationNo.");
                 end;
             }
-            }
         }
-
-        var
-            isEnabled:Boolean;
     }
+
+    var
+        isEnabled: Boolean;
+}
 

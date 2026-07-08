@@ -1,6 +1,14 @@
-codeunit 50400 "EmployeeRegistration"
+codeunit 50400 "EmployeeHelper"
 {
-
+    procedure UpdateLeaveTaken(ID: Code[12]; Days: Integer)
+    var
+        Employee : Record EmployeeTable;
+    begin
+        if Employee.Get(ID) then begin
+            Employee.Leave_Taken := Employee.Leave_Taken - Days;
+        end;
+    end;
+    
     procedure RegisterMembers(ApplicationID:Integer)
     var
         EmployeeApplication: Record EmployeeApplicationTable;
@@ -30,7 +38,7 @@ codeunit 50400 "EmployeeRegistration"
                 // send email
                 SendNotification.SuccessfulRegistrationEmail(Employee."Email Address", Employee.EmployeeNo, Employee."First Name");
                 Message('Success!\Application has been approved.\Employee has received confirmation email.');
-                // EmployeeApplication.Delete();
+                EmployeeApplication.Delete();
             end else if EmployeeApplication.Status= EmployeeApplication.Status::Rejected then begin
                 SendNotification.RejectedRegistrationEmail(EmployeeApplication."Email Address", EmployeeApplication."First Name");
                 Message('Application has been rejected!\Employee has been notified.');
