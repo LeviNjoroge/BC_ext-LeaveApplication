@@ -5,7 +5,9 @@ codeunit 50400 "EmployeeHelper"
         Employee : Record EmployeeTable;
     begin
         if Employee.Get(ID) then begin
-            Employee.Leave_Taken := Employee.Leave_Taken - Days;
+            // Employee.Leave_Taken := Employee.Leave_Taken + Days;
+            Employee.Validate(Leave_Taken, Employee.Leave_Taken + Days);
+            Employee.Modify();
         end;
     end;
     
@@ -32,7 +34,7 @@ codeunit 50400 "EmployeeHelper"
                 Employee."Marital Status" := EmployeeApplication."Marital Status";
                 Employee."Date of Joining" := EmployeeApplication."Date of Joining";
                 Employee."Job Title" := EmployeeApplication."Job Title";
-                Employee."Employment Tier" := EmployeeApplication."Employment Tier";
+                Employee.Validate(Employee."Employment Tier", EmployeeApplication."Employment Tier");
                 Employee.Department := EmployeeApplication.Department;
                 Employee.Insert();
                 // send email

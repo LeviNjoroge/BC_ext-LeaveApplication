@@ -5,6 +5,7 @@ codeunit 50402 SendNotifications
     // 2. Unsuccessful registration
     // 3. Successful application
     // 4. Unsuccessful/rejected application
+    // 5. Notify the admin on pending applications
     procedure SuccessfulRegistrationEmail(EmailAddress: Text; EmployeeNumber: Code[20]; Name: Text)
     // This sends users an email once their account is verified/approved
     begin
@@ -18,12 +19,12 @@ codeunit 50402 SendNotifications
         Email.Send(EmailMessage);
     end;
 
-    procedure ApprovedLeaveApplicationEmail(EmployeeID: Code[20]; LeaveType: Enum "Leave Application Types"; StartDate: Date; EndDate: Date)
+    procedure ApprovedLeaveApplicationEmail(ApprovalID: Code[20]; EmployeeID: Code[20]; LeaveType: Enum "Leave Application Types"; StartDate: Date; EndDate: Date)
     var
         Employee: Record EmployeeTable;
     begin
         if Employee.Get(EmployeeID) then begin
-            EmailMessage.Create(Employee."Email Address", 'Approved Leave Application', StrSubstNo('Dear %1, your request to go on %2 from %3 to %4 has been <b>Approved!</b><br>Enjoy your leave!', Employee."First Name", LeaveType, StartDate, EndDate), true);
+            EmailMessage.Create(Employee."Email Address", 'Approved Leave Application', StrSubstNo('Dear %1, your request to go on %2 from %3 to %4 has been <b>approved!</b><br>Your approval code is: %5<br>Enjoy your leave!', Employee."First Name", LeaveType, StartDate, EndDate, ApprovalID), true);
             Email.Send(EmailMessage);
         end else begin
             Error('Email not sent as Employee with ID %1 was not found', EmployeeID);
@@ -46,6 +47,20 @@ codeunit 50402 SendNotifications
         end else begin
             Error('Email not sent as Employee with ID %1 was not found', EmployeeID);
         end;
+    end;
+
+    procedure NotifyAdmin(LeaveType: Enum "Leave Application Types"; Employee: Code[20]; DateofApplication: Date)
+    var
+        Setup: Record SetupTable;
+        EmailBody: Text;
+    begin
+        EmailBody := StrSubstNo(
+            'Dear admin, you are requested to review a %1 application by %2, submitted on %3. <br>Please find more details on your administration portal.<br> Thank you!',
+            LeaveType, Employee, DateofApplication
+        );
+        Setup.GetSetup();
+        EmailMessage.Create(Setup."Approvals Admin's Email", 'Pending leave application', EmailBody, true);
+        Email.Send(EmailMessage);
     end;
 
     var

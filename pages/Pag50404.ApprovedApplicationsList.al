@@ -5,6 +5,7 @@ page 50404 "Approved Applications List"
     PageType = List;
     SourceTable = ApprovedApplications;
     UsageCategory = Lists;
+    CardPageId = "Leave Application";
     
     layout
     {

@@ -39,6 +39,14 @@ page 50410 "Leave Application Setup"
                 {
                 }
             }
+            group("Admin")
+            {
+                field("Approvals Admin's Email"; Rec."Approvals Admin's Email")
+                {
+                    ApplicationArea = All;
+                }
+
+            }
             group("Log info"){
                 field(SystemCreatedAt; Rec.SystemCreatedAt)
                 {

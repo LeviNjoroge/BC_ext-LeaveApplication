@@ -39,13 +39,6 @@ codeunit 50401 "Leave Application Helper"
         exit(EndDate);
     end;
 
-    procedure CalculateOtherLeaveEnd(StartDate: Date; Days: Integer): Date
-    var
-        EndDate: Date;
-    begin
-        exit(EndDate);
-    end;
-
     // procedure TestCalendar()
     //     var
     //         CompanyInfo: Record "Company Information";
@@ -81,12 +74,18 @@ codeunit 50401 "Leave Application Helper"
                 ApprovedApplications.Attachments := LeaveApplications.Attachments;
                 ApprovedApplications.ApprovalDate := LeaveApplications."Approval Date";
                 ApprovedApplications.Insert();
+                LeaveApplications.Delete();
                 // deduct the remaining leave days
-                EmployeeHelper.UpdateLeaveTaken(ApprovedApplications.Employee, ApprovedApplications."No. of days");
+                if ApprovedApplications."Leave Type" = ApprovedApplications."Leave Type"::"Annual Leave" then begin
+                    EmployeeHelper.UpdateLeaveTaken(ApprovedApplications.Employee, ApprovedApplications."No. of days");
+                end;
                 // send email: - dear employee, your request to go on [type] leave from start date to end date has been approved. you are set to resume your duties on extected return date
-                SendNotifications.ApprovedLeaveApplicationEmail(ApprovedApplications.Employee, ApprovedApplications."Leave Type", ApprovedApplications."Start date", ApprovedApplications."End date");
+                SendNotifications.ApprovedLeaveApplicationEmail(ApprovedApplications.LeaveNo, ApprovedApplications.Employee, ApprovedApplications."Leave Type", ApprovedApplications."Start date", ApprovedApplications."End date");
             end else if LeaveApplications.Status = LeaveApplications.Status::Rejected then begin
                 SendNotifications.RejectedLeaveApplicationEmail(LeaveApplications.Employee, LeaveApplications."Leave Type", LeaveApplications."Start date", LeaveApplications."End date", LeaveApplications."Rejection Reason");
+            end else if LeaveApplications.Status = LeaveApplications.Status::Pending then begin
+                SendNotifications.NotifyAdmin(LeaveApplications."Leave Type", LeaveApplications.Employee, LeaveApplications.SystemCreatedAt.Date);
+                Message('Admin has been notified of the leave application.\Please be patient as your application is being reviewed');
             end;
         end;
     end;

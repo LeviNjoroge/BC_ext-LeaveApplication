@@ -5,6 +5,7 @@ page 50403 "Pending Applications List"
     PageType = List;
     SourceTable = LeaveApplicationsTable;
     UsageCategory = Lists;
+    CardPageId = "Leave Application";
     
     layout
     {
@@ -156,6 +157,7 @@ page 50403 "Pending Applications List"
                 trigger OnAction()
                 begin
                     Rec.Status := Rec.Status::Approved;
+                    Rec."Approval Date" := CurrentDateTime.Date;
                 end;
             }
             action(Reject)
@@ -164,17 +166,17 @@ page 50403 "Pending Applications List"
                 trigger OnAction()
                 begin
                     Rec.Status := Rec.Status::Rejected;
+                    Clear(Rec."Approval Date");
                 end;
             }
             action(Submit)
             {
                 Image = Completed;
-                Caption = 'Submit Application';
                 trigger OnAction()
                 var
-                    EmployeeRegisteration: Codeunit EmployeeHelper;
+                    LeaveApplicationHelper: Codeunit "Leave Application Helper";
                 begin
-                    EmployeeRegisteration.RegisterMembers(Rec.ApplicationNo);
+                    LeaveApplicationHelper.Submit(Rec.ApplicationNo);
                 end;
             }
         }

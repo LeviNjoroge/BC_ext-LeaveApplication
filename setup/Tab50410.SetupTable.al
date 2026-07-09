@@ -33,6 +33,11 @@ table 50410 SetupTable
         {
             DataClassification = ToBeClassified;
         }
+        field(8; "Approvals Admin's Email"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+            ExtendedDatatype = EMail;
+        }
     }
     keys
     {
