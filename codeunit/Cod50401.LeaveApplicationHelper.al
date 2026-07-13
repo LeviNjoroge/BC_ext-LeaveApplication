@@ -84,7 +84,7 @@ codeunit 50401 "Leave Application Helper"
             end else if LeaveApplications.Status = LeaveApplications.Status::Rejected then begin
                 SendNotifications.RejectedLeaveApplicationEmail(LeaveApplications.Employee, LeaveApplications."Leave Type", LeaveApplications."Start date", LeaveApplications."End date", LeaveApplications."Rejection Reason");
             end else if LeaveApplications.Status = LeaveApplications.Status::Pending then begin
-                SendNotifications.NotifyAdmin(LeaveApplications."Leave Type", LeaveApplications.Employee, LeaveApplications.SystemCreatedAt.Date);
+                SendNotifications.NotifyAdmin(LeaveApplications."Leave Type", LeaveApplications.Employee, LeaveApplications.SystemCreatedAt.Date, LeaveApplications.ApplicationNo);
                 Message('Admin has been notified of the leave application.\Please be patient as your application is being reviewed');
             end;
         end;

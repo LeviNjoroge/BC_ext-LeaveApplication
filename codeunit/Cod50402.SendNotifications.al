@@ -49,17 +49,28 @@ codeunit 50402 SendNotifications
         end;
     end;
 
-    procedure NotifyAdmin(LeaveType: Enum "Leave Application Types"; Employee: Code[20]; DateofApplication: Date)
+    procedure NotifyAdmin(LeaveType: Enum "Leave Application Types"; Employee: Code[20]; DateofApplication: Date; AppID: Integer)
     var
+        TempBlob: Codeunit "Temp Blob";
         Setup: Record SetupTable;
         EmailBody: Text;
+        InS: InStream;
+        OutS: OutStream;
+        ApplicationsTable: Record LeaveApplicationsTable;
     begin
+        ApplicationsTable.Get(AppID);
         EmailBody := StrSubstNo(
             'Dear admin, you are requested to review a %1 application by %2, submitted on %3. <br>Please find more details on your administration portal.<br> Thank you!',
             LeaveType, Employee, DateofApplication
         );
         Setup.GetSetup();
         EmailMessage.Create(Setup."Approvals Admin's Email", 'Pending leave application', EmailBody, true);
+        if ApplicationsTable.Attachments.HasValue then begin
+            TempBlob.CreateOutStream(OutS);
+            ApplicationsTable.Attachments.ExportStream(OutS);
+            TempBlob.CreateInStream(InS);
+            EmailMessage.AddAttachment(StrSubstNo('%1-%2-AttachmentFile.pdf', Employee, LeaveType), '', InS);
+        end;
         Email.Send(EmailMessage);
     end;
 

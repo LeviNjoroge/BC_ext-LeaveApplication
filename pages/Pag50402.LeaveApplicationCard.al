@@ -1,4 +1,4 @@
-page 50405 "Leave Application"
+page 50402 "Leave Application"
 {
     ApplicationArea = All;
     Caption = 'Leave Application Card';
@@ -95,6 +95,14 @@ page 50405 "Leave Application"
                     ToolTip = 'Specifies the value of the Rejection Reason field.', Comment = '%';
                     Editable = Rec.Status = Rec.Status::Rejected;
                 }
+            }
+        }
+        area(FactBoxes)
+        {
+            part(Upload; AttachmentsPart)
+            {
+                ApplicationArea = All;
+                SubPageLink = ApplicationNo = field(ApplicationNo);
             }
         }
     }

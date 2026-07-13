@@ -1,23 +1,26 @@
-page 50401 "Registered Employees List"
+page 50411 "Employee Single"
 {
     ApplicationArea = All;
-    Caption = 'Registered Employees List';
-    PageType = List;
+    Caption = 'Employee Single';
+    PageType = Card;
     SourceTable = EmployeeTable;
-    UsageCategory = Lists;
-    CardPageId = 50411;
-    
+
     layout
     {
         area(Content)
         {
-            repeater(General)
+            group("General Information")
             {
                 field(EmployeeNo; Rec.EmployeeNo)
                 {
-                    ToolTip = 'Specifies the value of the ApplicationNo. field.', Comment = '%';
+                    ApplicationArea = All;
                     Editable = false;
                 }
+                
+            }
+            group("Personal Information")
+            {
+
                 field("First Name"; Rec."First Name")
                 {
                     ToolTip = 'Specifies the value of the First Name field.', Comment = '%';
@@ -34,6 +37,17 @@ page 50401 "Registered Employees List"
                 {
                     ToolTip = 'Specifies the value of the Gender field.', Comment = '%';
                 }
+                field("National ID/ Passport No."; Rec."National ID/ Passport No.")
+                {
+                    ToolTip = 'Specifies the value of the National ID/ Passport No. field.', Comment = '%';
+                }
+                field("Marital Status"; Rec."Marital Status")
+                {
+                    ToolTip = 'Specifies the value of the Marital Status field.', Comment = '%';
+                }
+            }
+            group("Contact Information")
+            {
                 field("Telephone Number"; Rec."Telephone Number")
                 {
                     ToolTip = 'Specifies the value of the Telephone Number field.', Comment = '%';
@@ -46,14 +60,9 @@ page 50401 "Registered Employees List"
                 {
                     ToolTip = 'Specifies the value of the Address field.', Comment = '%';
                 }
-                field("National ID/ Passport No."; Rec."National ID/ Passport No.")
-                {
-                    ToolTip = 'Specifies the value of the National ID/ Passport No. field.', Comment = '%';
-                }
-                field("Marital Status"; Rec."Marital Status")
-                {
-                    ToolTip = 'Specifies the value of the Marital Status field.', Comment = '%';
-                }
+            }
+            group("Employment Information")
+            {
                 field("Date of Joining"; Rec."Date of Joining")
                 {
                     ToolTip = 'Specifies the value of the Date of Joining field.', Comment = '%';
@@ -70,19 +79,22 @@ page 50401 "Registered Employees List"
                 {
                     ToolTip = 'Specifies the value of the Department field.', Comment = '%';
                 }
+            }
+            group("Leave days")
+            {
                 field("Annual Leave Entitlement"; Rec."Annual Leave Entitlement")
                 {
-                    ToolTip = 'Specifies the value of the Annual Leave Entitlement field.', Comment = '%';
+                    ApplicationArea = All;
                 }
                 field(Leave_Taken; Rec.Leave_Taken)
                 {
                     ApplicationArea = All;
                 }
-
                 field("Leave Balance"; Rec."Leave Balance")
                 {
-                    ToolTip = 'Specifies the value of the Leave Balance field.', Comment = '%';
+                    ApplicationArea = All;
                 }
+                
             }
         }
     }
@@ -104,6 +116,27 @@ page 50401 "Registered Employees List"
             group(Other)
             {
                 actionref(Setting; Settings) { }
+            }
+        }
+        area(Processing)
+        {
+            action("SandBox:testingBlobInS")
+            {
+                trigger OnAction()
+                var
+                    Sandbox: Codeunit SandboxCodeunit;
+                begin
+                    Sandbox.DownloadAdminBC();
+                end;
+            }
+            action("TestAttachment")
+            {
+                trigger OnAction()
+                var
+                    Sandbox: Codeunit SendNotifications;
+                begin
+                    Sandbox.SuccessfulRegistrationEmail('junelee205@gmail.com', '34234', 'Jay');
+                end;
             }
         }
         area(Navigation)
@@ -170,6 +203,11 @@ page 50401 "Registered Employees List"
                     ApprovalsList.Run();
                 end;
             }
+            
         }
     }
+
+    var
+        isEnabled: Boolean;
 }
+

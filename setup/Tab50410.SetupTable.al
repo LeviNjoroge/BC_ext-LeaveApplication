@@ -38,6 +38,11 @@ table 50410 SetupTable
             DataClassification = ToBeClassified;
             ExtendedDatatype = EMail;
         }
+        field(9; "Admin's Business Card"; Blob)
+        {
+            Subtype = Bitmap;
+            DataClassification = ToBeClassified;
+        }
     }
     keys
     {

@@ -37,9 +37,8 @@ table 50402 LeaveApplicationsTable
         {
             Caption = 'Comments';
         }
-        field(8; Attachments; Blob)
+        field(8; Attachments; Media)
         {
-            Subtype = Bitmap;
             Caption = 'Attachments';
         }
         field(9; "Approval Date"; Date)

@@ -5,8 +5,8 @@ codeunit 50400 "EmployeeHelper"
         Employee : Record EmployeeTable;
     begin
         if Employee.Get(ID) then begin
-            // Employee.Leave_Taken := Employee.Leave_Taken + Days;
-            Employee.Validate(Leave_Taken, Employee.Leave_Taken + Days);
+            Employee.Leave_Taken := Employee.Leave_Taken + Days;
+            // Employee.Validate(Leave_Taken, Employee.Leave_Taken + Days);
             Employee.Modify();
         end;
     end;
@@ -17,6 +17,7 @@ codeunit 50400 "EmployeeHelper"
         Employee: Record EmployeeTable;
         Setup : Record SetupTable;
         SendNotification: Codeunit SendNotifications;
+        EmployeeList: Page "Registered Employees List";
     begin
         if EmployeeApplication.Get(ApplicationID) then begin
             if EmployeeApplication.Status = EmployeeApplication.Status::Approved then begin
@@ -41,6 +42,7 @@ codeunit 50400 "EmployeeHelper"
                 SendNotification.SuccessfulRegistrationEmail(Employee."Email Address", Employee.EmployeeNo, Employee."First Name");
                 Message('Success!\Application has been approved.\Employee has received confirmation email.');
                 EmployeeApplication.Delete();
+                EmployeeList.Run();
             end else if EmployeeApplication.Status= EmployeeApplication.Status::Rejected then begin
                 SendNotification.RejectedRegistrationEmail(EmployeeApplication."Email Address", EmployeeApplication."First Name");
                 Message('Application has been rejected!\Employee has been notified.');

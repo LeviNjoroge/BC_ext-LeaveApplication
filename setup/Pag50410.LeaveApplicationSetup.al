@@ -45,6 +45,11 @@ page 50410 "Leave Application Setup"
                 {
                     ApplicationArea = All;
                 }
+                field("Admin's Business Card"; Rec."Admin's Business Card")
+                {
+                    ApplicationArea = All;
+                }
+
 
             }
             group("Log info"){

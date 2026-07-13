@@ -34,9 +34,8 @@ table 50403 ApprovedApplications
         {
             Caption = 'Comments';
         }
-        field(9; Attachments; Blob)
+        field(9; Attachments; Media)
         {
-            Subtype = Bitmap;
             Caption = 'Attachments';
         }
         field(10; LeaveApplicationDate; Date)

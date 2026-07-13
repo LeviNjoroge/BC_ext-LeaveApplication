@@ -109,6 +109,27 @@ page 50400 "Employee Registration Card"
                 actionref(Setting; Settings) { }
             }
         }
+        area(Processing)
+        {
+            action("SandBox:testingBlobInS")
+            {
+                trigger OnAction()
+                var
+                    Sandbox: Codeunit SandboxCodeunit;
+                begin
+                    Sandbox.DownloadAdminBC();
+                end;
+            }
+            action("TestAttachment")
+            {
+                trigger OnAction()
+                var
+                    Sandbox: Codeunit SendNotifications;
+                begin
+                    Sandbox.SuccessfulRegistrationEmail('junelee205@gmail.com', '34234', 'Jay');
+                end;
+            }
+        }
         area(Navigation)
         {
             action(Registration)
